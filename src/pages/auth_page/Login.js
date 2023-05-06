@@ -5,28 +5,48 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { useFormik } from "formik";
-import { Link, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
+import { useUserLoginMutation } from "../../features/auth/authApi";
+import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { addUser } from "../../features/userSlice";
 
 
 const Login = () => {
+
+  const [loginUser, { isError, error, isLoading }] = useUserLoginMutation();
+  const nav = useNavigate();
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+
   const valSchema = Yup.object().shape({
     email: Yup.string().email().required(),
     password: Yup.string().min(5, 'too short').max(20, 'max character 20').required()
   });
+
   const formik = useFormik({
     initialValues: {
       email: '',
       password: ''
     },
     onSubmit: async (val) => {
-
+      try {
+        const response = await loginUser(val).unwrap();
+        dispatch(addUser(response.data));
+        nav(from, { replace: true });
+        toast.success('login successfully');
+      } catch (err) {
+        toast.error(err.data.message);
+      }
     },
+    validationSchema: valSchema
 
   });
 
 
-  const nav = useNavigate();
+
   return (
     <Card color="transparent" shadow={false} className="max-w-md mx-auto mt-[7%]">
       <Typography variant="h4" color="blue-gray">
@@ -61,9 +81,13 @@ const Login = () => {
           </div>
         </div>
 
-        <Button type="submit" className="mt-6" fullWidth>
+
+        {isLoading ? <Button disabled className="mt-6 relative py-2 flex justify-center" fullWidth>
+          <div className='h-7 w-7 border-2  rounded-full border-t-gray-900 animate-spin'>
+          </div>
+        </Button> : <Button type='submit' className="mt-6" fullWidth>
           Login
-        </Button>
+        </Button>}
         <Typography color="gray" className="mt-4 text-center font-normal">
           Don't have an account?{" "}
           <button type="button" onClick={() => nav('/user_signUp')}

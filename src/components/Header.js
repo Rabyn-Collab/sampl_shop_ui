@@ -9,11 +9,12 @@ import {
   Avatar,
 } from "@material-tailwind/react";
 import { NavLink, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const adminProfile = [
   {
     label: "Admin Profile",
-    path: 'user_profile'
+    path: 'admin_profile'
   },
   {
     label: "Products",
@@ -30,7 +31,7 @@ const adminProfile = [
 const userProfile = [
   {
     label: "My Profile",
-    path: 'user_detail'
+    path: 'user_profile'
   },
   {
     label: "Sign Out",
@@ -47,15 +48,16 @@ const Header = () => {
   const nav = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const closeMenu = () => setIsMenuOpen(false);
+  const { user } = useSelector((store) => store.userInfo);
   return (
     <header className="bg-purple-500 flex items-center justify-between px-7 py-2 text-white">
 
       <NavLink to='/' replace className="text-xl">Sample Shop</NavLink>
       <div className="flex items-center space-x-7">
 
-        <NavLink><i className="fa-solid fa-cart-shopping"></i> Cart</NavLink>
-        <NavLink to='/user_login'>Login</NavLink>
-        <Menu open={isMenuOpen} handler={setIsMenuOpen} placement="bottom-end">
+        <NavLink to='/cart'><i className="fa-solid fa-cart-shopping"></i> Cart</NavLink>
+        {!user && <NavLink to='/user_login'>Login</NavLink>}
+        {user && <Menu open={isMenuOpen} handler={setIsMenuOpen} placement="bottom-end">
           <MenuHandler>
             <Button
               variant="text"
@@ -73,7 +75,25 @@ const Header = () => {
             </Button>
           </MenuHandler>
           <MenuList className="p-1">
-            {adminProfile.map(({ label, path }) => {
+            {user.isAdmin ? adminProfile.map(({ label, path }) => {
+              return (
+                <MenuItem
+                  key={label}
+                  onClick={() => {
+                    closeMenu();
+                    nav(`/${path}`)
+                  }}
+                  className="flex items-center gap-2 rounded">
+                  <Typography
+                    as="span"
+                    variant="small"
+                    className="font-normal"
+                  >
+                    {label}
+                  </Typography>
+                </MenuItem>
+              );
+            }) : userProfile.map(({ label, path }) => {
               return (
                 <MenuItem
                   key={label}
@@ -93,7 +113,7 @@ const Header = () => {
               );
             })}
           </MenuList>
-        </Menu>
+        </Menu>}
       </div>
 
     </header>
