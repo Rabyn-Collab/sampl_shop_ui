@@ -1,51 +1,40 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { cartCrud, clearAll, clearCart, getCart, getUser, setUser } from "./localstorage";
+import { addUser, clearAll, getCart, getUser } from "./localStorage";
+
+
 
 
 const initialState = {
-  carts: getCart(),
-  user: getUser()
+  userInfo: getUser(),
+  carts: getCart()
 };
 
 
-export const cartSlice = createSlice({
+export const userSlice = createSlice({
+  initialState,
   name: 'userInfo',
-  initialState: initialState,
   reducers: {
-    addUser: (state, action) => {
-      state.user = action.payload;
-      setUser(state.user);
+    setUser: (state, action) => {
+      state.userInfo = action.payload;
+      addUser(state.userInfo);
     },
-    addToCart: (state, action) => {
-      const existItem = state.carts.find((a) => a.product === action.payload.product);
-      if (!existItem) {
-        state.carts.push(action.payload);
-        cartCrud(state.carts);
-      }
+    setCart: (state, action) => {
 
     },
     updateCart: (state, action) => {
-      state.carts = state.carts.map((c) => c.product === action.payload.product ? action.payload : c);
-      cartCrud(state.carts);
-    },
-    removeFromCart: (state, action) => {
-      state.carts.splice(action.payload, 1);
-      cartCrud(state.carts);
+
     },
     clearCart: (state, action) => {
-      state.carts = [];
-      clearCart();
+
     },
-    clear: (state, action) => {
+    clearData: (state, action) => {
+      state.userInfo = null;
       state.carts = [];
-      state.user = null;
       clearAll();
-    }
+    },
 
   }
 });
-export const { addToCart, clear, removeFromCart, updateCart, addUser } = cartSlice.actions;
-export default cartSlice.reducer;
+export const { clearData, setUser } = userSlice.actions;
 
-
-
+export default userSlice.reducer;

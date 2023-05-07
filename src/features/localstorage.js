@@ -1,22 +1,32 @@
-export const setUser = (user) => {
+
+
+
+
+export const addUser = (user) => {
   localStorage.setItem('user', JSON.stringify(user));
 }
 
-export const cartCrud = (carts) => {
-  localStorage.setItem('carts', JSON.stringify(carts));
+export const addToCart = (cart) => {
+  localStorage.setItem('cart', JSON.stringify(cart));
 }
+
+
+export const clearCart = () => {
+  localStorage.removeItem('cart');
+}
+
 export const clearAll = () => {
   localStorage.clear();
 }
-export const clearCart = () => {
-  localStorage.removeItem('carts');
-}
-export const getCart = () => {
-  const data = localStorage.getItem('carts');
-  return data === null ? [] : JSON.parse(data);
-}
+
+
 
 export const getUser = () => {
   const data = localStorage.getItem('user');
   return data === null ? null : JSON.parse(data);
+}
+
+export const getCart = () => {
+  const data = localStorage.getItem('cart');
+  return data === null ? [] : JSON.parse(data);
 }

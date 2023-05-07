@@ -5,21 +5,15 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { useFormik } from "formik";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
-import { useUserLoginMutation } from "../../features/auth/authApi";
-import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
-import { addUser } from "../../features/userSlice";
+
 
 
 const Login = () => {
 
-  const [loginUser, { isError, error, isLoading }] = useUserLoginMutation();
+
   const nav = useNavigate();
-  const dispatch = useDispatch();
-  const location = useLocation();
-  const from = location.state?.from?.pathname || "/";
 
   const valSchema = Yup.object().shape({
     email: Yup.string().email().required(),
@@ -32,16 +26,9 @@ const Login = () => {
       password: ''
     },
     onSubmit: async (val) => {
-      try {
-        const response = await loginUser(val).unwrap();
-        dispatch(addUser(response.data));
-        nav(from, { replace: true });
-        toast.success('login successfully');
-      } catch (err) {
-        toast.error(err.data.message);
-      }
+
     },
-    validationSchema: valSchema
+
 
   });
 

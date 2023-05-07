@@ -12,11 +12,9 @@ import SignUp from './pages/auth_page/SignUp'
 import AddProduct from './pages/admin_page/AddProduct'
 import OrderDetail from './pages/user_page/OrderDetail'
 import UserProfile from './pages/user_page/UserProfile'
-import RequireAdmin from './components/RequireAdmin'
-import RequireAuth from './components/RequireAuth'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
-import UserRoutes from './components/UserRoutes'
+
 const App = () => {
 
   return (
@@ -28,23 +26,22 @@ const App = () => {
           <Route index element={<HomePage />} />
 
 
-          <Route element={<RequireAdmin />} >
-            <Route path='product_list' element={<ProductList />} />
-            <Route path='product_add' element={<AddProduct />} />
-            <Route path='user/placeorder' element={<PlaceOrder />} />
-          </Route>
+          <Route path='product_list' element={<ProductList />} />
+          <Route path='product_add' element={<AddProduct />} />
+          <Route path='user/placeorder' element={<PlaceOrder />} />
 
-          <Route element={<RequireAuth />} >
-            <Route path='cart' element={<CartPage />} />
-            <Route path='user/shipping' element={<Shipping />} />
-            <Route path='order/:id' element={<OrderDetail />} />
-            <Route path='user_profile' element={<UserProfile />} />
-          </Route>
 
-          <Route element={<UserRoutes />}>
-            <Route path='user_login' element={<Login />} />
-            <Route path='user_signUp' element={<SignUp />} />
-          </Route>
+
+          <Route path='cart' element={<CartPage />} />
+          <Route path='user/shipping' element={<Shipping />} />
+          <Route path='order/:id' element={<OrderDetail />} />
+          <Route path='user_profile' element={<UserProfile />} />
+
+
+
+          <Route path='user_login' element={<Login />} />
+          <Route path='user_signUp' element={<SignUp />} />
+
 
           <Route path='product/:id' element={<ProductDetail />} />
 
