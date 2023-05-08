@@ -5,7 +5,7 @@ import { addUser, clearAll, getCart, getUser } from "./localStorage";
 
 
 const initialState = {
-  userInfo: getUser(),
+  user: getUser(),
   carts: getCart()
 };
 
@@ -15,7 +15,7 @@ export const userSlice = createSlice({
   name: 'userInfo',
   reducers: {
     setUser: (state, action) => {
-      state.userInfo = action.payload;
+      state.user = action.payload;
       addUser(state.userInfo);
     },
     setCart: (state, action) => {

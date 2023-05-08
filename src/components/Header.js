@@ -50,7 +50,7 @@ const Header = () => {
   const closeMenu = () => setIsMenuOpen(false);
   const { user } = useSelector((store) => store.userInfo);
   return (
-    <header className="bg-purple-500 flex items-center justify-between px-7 py-2 text-white">
+    <header className="bg-purple-500 flex items-center justify-between px-7 py-3 text-white">
 
       <NavLink to='/' replace className="text-xl">Sample Shop</NavLink>
       <div className="flex items-center space-x-7">

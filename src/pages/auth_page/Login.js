@@ -5,8 +5,12 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { useFormik } from "formik";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
+import { useUserLoginMutation } from "../../features/auth/authApi";
+import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../features/userSlice";
 
 
 
@@ -14,6 +18,15 @@ const Login = () => {
 
 
   const nav = useNavigate();
+  const state = useLocation();
+  const path = state?.form?.pathname || '/';
+  const dispatch = useDispatch();
+
+
+  const [loginUser, { isLoading }] = useUserLoginMutation();
+
+
+
 
   const valSchema = Yup.object().shape({
     email: Yup.string().email().required(),
@@ -27,8 +40,19 @@ const Login = () => {
     },
     onSubmit: async (val) => {
 
-    },
 
+      try {
+        const response = await loginUser(val).unwrap();
+        dispatch(setUser(response.user));
+        nav(path);
+        toast.success('successfully login');
+      } catch (err) {
+        toast.error(err.data.message);
+      }
+
+
+    },
+    validationSchema: valSchema
 
   });
 

@@ -1,6 +1,5 @@
 import React from 'react'
 import { useNavigate, useParams } from 'react-router';
-import { baseUrl, loading } from '../constants/constansts';
 import { Image, Shimmer } from 'react-shimmer'
 import { useFormik } from 'formik';
 import Reviews from '../components/Reviews';
