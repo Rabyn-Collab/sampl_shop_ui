@@ -3,13 +3,17 @@ import { Card, Input, Button, Typography, } from "@material-tailwind/react";
 import { useNavigate } from 'react-router';
 import { useFormik } from 'formik';
 import * as Yup from "yup";
+import { useUserSignUpMutation } from '../../features/auth/authApi';
+import { toast } from 'react-toastify';
 
 
 
 const SignUp = () => {
 
+  const [registerUser, { isLoading }] = useUserSignUpMutation();
+  const nav = useNavigate();
   const valSchema = Yup.object().shape({
-    fullname: Yup.string().email().required(),
+    fullname: Yup.string().required(),
     email: Yup.string().min(5, 'too short').max(30, 'max character 20').required(),
     password: Yup.string().min(5, 'too short').max(20, 'max character 20').required()
   });
@@ -20,12 +24,21 @@ const SignUp = () => {
       password: ''
     },
     onSubmit: async (val) => {
+      try {
+        const response = await registerUser(val).unwrap();
+        nav(-1);
+        toast.success('successfully register');
+        console.log(response);
+      } catch (err) {
+        console.log(err);
+        toast.error(err.data.message);
+      }
 
 
     },
     validationSchema: valSchema
   });
-  const nav = useNavigate();
+
   return (
     <div className='max-w-sm mt-16  mx-auto '>
       <div>
@@ -68,9 +81,12 @@ const SignUp = () => {
 
             </div>
 
-            <Button type='submit' className="mt-6" fullWidth>
+            {isLoading ? <Button disabled className="mt-6 relative py-2 flex justify-center" fullWidth>
+              <div className='h-7 w-7 border-2  rounded-full border-t-gray-900 animate-spin'>
+              </div>
+            </Button> : <Button type='submit' className="mt-6" fullWidth>
               Register
-            </Button>
+            </Button>}
             <Typography color="gray" className="mt-4 text-center font-normal">
               Already have an account?{" "}
               <button type='button' onClick={() => nav(-1)} className='ml-2 text-blue-900 font-bold'>Login</button>

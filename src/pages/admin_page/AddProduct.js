@@ -4,13 +4,17 @@ import { useNavigate } from 'react-router';
 import { useFormik } from 'formik';
 import * as Yup from "yup";
 import { Select, Option } from "@material-tailwind/react";
+import { useSelector } from 'react-redux';
+import { useProductAddMutation } from '../../features/crud/crudApi';
+import { toast } from 'react-toastify';
 
 
 
 
 const AddProduct = () => {
   const nav = useNavigate();
-
+  const [addProduct, { isLoading }] = useProductAddMutation();
+  const { user } = useSelector((store) => store.userInfo)
   const valSchema = Yup.object().shape({
     product_name: Yup.string().min(5, 'too short').max(50, 'max character 50').required(),
     product_detail: Yup.string().min(10, 'too short').max(200, 'max character 200').required(),
@@ -36,9 +40,29 @@ const AddProduct = () => {
       countInStock: ''
     },
     onSubmit: async (val) => {
+      try {
+
+        let formData = new FormData();
+        formData.append('product_name', val.product_name);
+        formData.append('product_price', Number(val.product_price));
+        formData.append('brand', val.brand);
+        formData.append('product_detail', val.product_detail);
+        formData.append('product_image', val.product_image);
+        formData.append('category', val.category);
+        formData.append('countInStock', Number(val.countInStock));
+        console.log(formData);
+        const response = await addProduct({
+          body: formData,
+          token: user.token
+        }).unwrap();
+        nav(-1);
+        toast.success('successfully added');
+      } catch (err) {
+        toast.error(err.data.message);
+      }
 
     },
-    validationSchema: valSchema
+    // validationSchema: valSchema
   });
 
 
@@ -114,12 +138,12 @@ const AddProduct = () => {
 
 
               <div className="w-72">
-                <Select label="Select Category" name='select'>
-                  <Option>Sports</Option>
-                  <Option>Clothes</Option>
-                  <Option>Tech</Option>
-                  <Option>Games</Option>
-                  <Option>Beauty Products</Option>
+                <Select label="Select Category" name='category' onChange={(e) => formik.setFieldValue('category', e)}>
+                  <Option value='sports'>Sports</Option>
+                  <Option value='clothes'>Clothes</Option>
+                  <Option value='tech'>Tech</Option>
+                  <Option value='games'>Games</Option>
+                  <Option value='beauty products'>Beauty Products</Option>
                 </Select>
               </div>
 
@@ -160,13 +184,13 @@ const AddProduct = () => {
 
 
             {
-              // isLoading ? <Button disabled className="mt-6 relative py-2 flex justify-center" fullWidth>
-              //   <div className='h-7 w-7 border-2  rounded-full border-t-gray-900 animate-spin'>
-              //   </div>
-              // </Button> : 
-              <Button type='submit' className="mt-6" fullWidth>
-                Submit
-              </Button>}
+              isLoading ? <Button disabled className="mt-6 relative py-2 flex justify-center" fullWidth>
+                <div className='h-7 w-7 border-2  rounded-full border-t-gray-900 animate-spin'>
+                </div>
+              </Button> :
+                <Button type='submit' className="mt-6" fullWidth>
+                  Submit
+                </Button>}
 
           </form>
         </Card>

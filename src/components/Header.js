@@ -9,7 +9,9 @@ import {
   Avatar,
 } from "@material-tailwind/react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { clearAll } from "../features/localStorage";
+import { clearData } from "../features/userSlice";
 
 const adminProfile = [
   {
@@ -48,6 +50,7 @@ const Header = () => {
   const nav = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const closeMenu = () => setIsMenuOpen(false);
+  const dispatch = useDispatch();
   const { user } = useSelector((store) => store.userInfo);
   return (
     <header className="bg-purple-500 flex items-center justify-between px-7 py-3 text-white">
@@ -81,7 +84,13 @@ const Header = () => {
                   key={label}
                   onClick={() => {
                     closeMenu();
-                    nav(`/${path}`)
+                    if (path === 'logOut') {
+                      dispatch(clearData());
+                    } else {
+                      nav(`/${path}`)
+                    }
+
+
                   }}
                   className="flex items-center gap-2 rounded">
                   <Typography
@@ -99,7 +108,12 @@ const Header = () => {
                   key={label}
                   onClick={() => {
                     closeMenu();
-                    nav(`/${path}`)
+                    if (path === 'logOut') {
+                      dispatch(clearData());
+                    } else {
+                      nav(`/${path}`)
+                    }
+
                   }}
                   className="flex items-center gap-2 rounded">
                   <Typography

@@ -16,7 +16,7 @@ export const userSlice = createSlice({
   reducers: {
     setUser: (state, action) => {
       state.user = action.payload;
-      addUser(state.userInfo);
+      addUser(state.user);
     },
     setCart: (state, action) => {
 
@@ -28,7 +28,7 @@ export const userSlice = createSlice({
 
     },
     clearData: (state, action) => {
-      state.userInfo = null;
+      state.user = null;
       state.carts = [];
       clearAll();
     },
