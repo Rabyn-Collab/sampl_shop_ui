@@ -3,12 +3,14 @@ import { useNavigate, useParams } from 'react-router';
 import { Image, Shimmer } from 'react-shimmer'
 import { useFormik } from 'formik';
 import Reviews from '../components/Reviews';
-
+import { useGetProductByIdQuery } from '../features/crud/crudApi';
+import { baseUrl } from '../constants/constants';
 
 
 const ProductDetail = () => {
   const nav = useNavigate();
   const { id } = useParams();
+  const { isLoading, isError, error, data } = useGetProductByIdQuery(id);
 
   const formik = useFormik({
     initialValues: {
@@ -16,19 +18,14 @@ const ProductDetail = () => {
     },
   });
 
-  const data = {
-    _id: '644c63bf68b3c792b9ffc2c4',
-    product_name: "beauty product",
-    product_detail: "During the early stages of shampoo in Europe, English hair stylists bo…",
-    product_price: 9000,
-    rating: 0,
-    numReviews: 0,
-    product_image: "https://images.unsplash.com/photo-1509967419530-da38b4704bc6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fGJlYXV0eXxlbnwwfDB8MHx8&auto=format&fit=crop&w=500&q=60",
-    brand: "shampoo",
-    category: "beauty products",
-    countInStock: 5,
-    reviews: []
-  };
+
+  if (isLoading) {
+    return <div className='h-[250px] w-[25%] mx-auto mt-[9%]'>
+      <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_tmnc73b6.json" background="transparent" speed="1" loop autoplay></lottie-player>
+    </div>
+
+  }
+
 
 
   const total = data.reviews.reduce((acc, item) => acc + item.rating, 0);
@@ -46,7 +43,7 @@ const ProductDetail = () => {
       <div className='grid grid-cols-3 px-5 py-7 gap-10'>
         <div>
           <Image
-            src={`${data.product_image}`}
+            src={`${baseUrl}${data.product_image}`}
             fallback={<Shimmer height={300} width={400} duration={4} />}
           />
 

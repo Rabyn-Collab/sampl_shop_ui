@@ -50,7 +50,7 @@ const AddProduct = () => {
         formData.append('product_image', val.product_image);
         formData.append('category', val.category);
         formData.append('countInStock', Number(val.countInStock));
-        console.log(formData);
+
         const response = await addProduct({
           body: formData,
           token: user.token
@@ -62,7 +62,7 @@ const AddProduct = () => {
       }
 
     },
-    // validationSchema: valSchema
+    validationSchema: valSchema
   });
 
 

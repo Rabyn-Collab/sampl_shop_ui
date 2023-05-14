@@ -7,10 +7,12 @@ import {
 } from "@material-tailwind/react";
 import { Image, Shimmer } from 'react-shimmer'
 import { useNavigate } from 'react-router';
+import { baseUrl } from '../constants/constants';
 
 const CardShow = ({ product }) => {
   const nav = useNavigate();
   const total = product.reviews.reduce((acc, item) => acc + item.rating, 0);
+
 
   const avgRating = total / product.reviews.length;
   let icons = [];
@@ -22,7 +24,7 @@ const CardShow = ({ product }) => {
     <Card onClick={() => nav(`/product/${product._id}`)} className="w-full max-w-[26rem] shadow-lg cursor-pointer">
       <CardHeader floated={false} color="blue-gray">
         <Image
-          src={`${product.product_image}`}
+          src={`${baseUrl}${product.product_image}`}
           fallback={<Shimmer height={200} width={400} duration={4} />}
         />
 
@@ -44,7 +46,7 @@ const CardShow = ({ product }) => {
         </div>
 
         <Typography color="gray">
-          {product.product_detail.substring(0, 70)}
+          {product.product_detail.substring(0, 20) + '....'}
         </Typography>
 
       </CardBody>

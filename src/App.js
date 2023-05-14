@@ -17,6 +17,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import AuthRoutes from './components/AuthRoutes'
 import AdminRoutes from './components/AdminRoutes'
 import UserRoutes from './components/UserRoutes'
+import EditProduct from './pages/admin_page/EditProduct'
 
 const App = () => {
 
@@ -31,6 +32,7 @@ const App = () => {
           <Route element={<AdminRoutes />}>
             <Route path='product_list' element={<ProductList />} />
             <Route path='product_add' element={<AddProduct />} />
+            <Route path='update/product/:id' element={<EditProduct />} />
           </Route>
 
 

@@ -13,6 +13,13 @@ export const crudApi = createApi({
       })
     }),
 
+    getProductById: builder.query({
+      query: (q) => ({
+        url: `/api/product/${q}`,
+      })
+    }),
+
+
     productAdd: builder.mutation({
       query: (q) => ({
         url: '/api/product_create',
@@ -37,5 +44,5 @@ export const crudApi = createApi({
 })
 
 
-export const { useGetAllProductsQuery, useProductAddMutation } = crudApi;
+export const { useGetAllProductsQuery, useProductAddMutation, useGetProductByIdQuery } = crudApi;
 
