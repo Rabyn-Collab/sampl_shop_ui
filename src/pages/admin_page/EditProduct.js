@@ -57,22 +57,23 @@ const EditProduct = () => {
         formData.append('category', val.category);
         formData.append('countInStock', Number(val.countInStock));
 
+
         if (val.product_image === null) {
 
           const response = await updateProduct({
             id: state._id,
             token: user.token,
-            body: val
+            body: formData
           }).unwrap();
           nav(-1);
           toast.success('successfully updated');
         } else {
-          console.log('hello');
           formData.append('product_image', val.product_image);
+          console.log(val);
           const response = await updateProductFile({
             id: state._id,
             token: user.token,
-            body: val,
+            body: formData,
             imagePath: state.product_image
           }).unwrap();
           nav(-1);
