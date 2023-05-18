@@ -5,17 +5,21 @@ import { useFormik } from 'formik';
 import Reviews from '../components/Reviews';
 import { useGetProductByIdQuery } from '../features/crud/crudApi';
 import { baseUrl } from '../constants/constants';
+import { useDispatch } from 'react-redux';
+import { setCart } from '../features/userSlice';
 
 
 const ProductDetail = () => {
   const nav = useNavigate();
   const { id } = useParams();
   const { isLoading, isError, error, data } = useGetProductByIdQuery(id);
+  const dispatch = useDispatch();
 
   const formik = useFormik({
     initialValues: {
       select: 1
     },
+
   });
 
 
@@ -36,7 +40,9 @@ const ProductDetail = () => {
     icons.push('fa-regular fa-star');
   }
 
-
+  const addToCarts = (cart) => {
+    dispatch(setCart(cart));
+  }
 
   return (
     <>
@@ -92,7 +98,19 @@ const ProductDetail = () => {
             <tr >
               <td colSpan={2}>
                 {data.countInStock === 0 ? <button disabled className='bg-gray-600 w-[70%] text-white py-2 px-2'>Add To Cart</button> : <button
-                  onClick={() => nav('/cart')}
+                  onClick={() => {
+                    addToCarts({
+                      name: data.product_name,
+                      qty: formik.values.select,
+                      image: data.product_image,
+                      totalPrice: data.product_price * formik.values.select,
+                      price: data.product_price,
+                      product: data._id,
+                      stock: data.countInStock
+                    });
+                    nav('/cart');
+                  }
+                  }
                   className='bg-black w-[70%] text-white py-2 px-2'>Add To Cart</button>}
               </td>
             </tr>

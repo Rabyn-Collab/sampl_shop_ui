@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addUser, clearAll, getCart, getUser } from "./localStorage";
+import { addToCart, addUser, clearAll, clearCart, getCart, getUser } from "./localStorage";
 
 
 
@@ -19,12 +19,26 @@ export const userSlice = createSlice({
       addUser(state.user);
     },
     setCart: (state, action) => {
+      const existItem = state.carts.find((a) => a.product === action.payload.product);
+      if (!existItem) {
+        state.carts.push(action.payload);
+        addToCart(state.carts);
+      }
 
     },
     updateCart: (state, action) => {
-
+      state.carts = state.carts.map((cart) => {
+        return cart.product === action.payload.product ? action.payload : cart;
+      });
+      addToCart(state.carts);
     },
-    clearCart: (state, action) => {
+    removeFromCart: (state, action) => {
+      state.carts.splice(action.payload, 1);
+      addToCart(state.carts);
+    },
+    clearCarts: (state, action) => {
+      clearCart();
+      state.carts = [];
 
     },
     clearData: (state, action) => {
@@ -35,6 +49,6 @@ export const userSlice = createSlice({
 
   }
 });
-export const { clearData, setUser } = userSlice.actions;
+export const { clearData, setUser, updateCart, clearCarts, setCart } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -21,6 +21,9 @@ import EditProduct from './pages/admin_page/EditProduct'
 
 const App = () => {
 
+  const numbers = [22, 55, 77];
+
+
   return (
 
     <>
