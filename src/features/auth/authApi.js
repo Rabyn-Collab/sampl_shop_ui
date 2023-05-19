@@ -31,7 +31,9 @@ export const authApi = createApi({
       query: (q) => ({
         url: '/api/userUpdate',
         method: 'PATCH',
-        body: q.body,
+        body: {
+          shippingAddress: q.body
+        },
         headers: {
           'Authorization': q.token
         }

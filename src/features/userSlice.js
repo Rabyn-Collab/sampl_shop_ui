@@ -36,6 +36,10 @@ export const userSlice = createSlice({
       state.carts.splice(action.payload, 1);
       addToCart(state.carts);
     },
+    updateUser: (state, action) => {
+      state.user = action.payload;
+      addUser(state.user);
+    },
     clearCarts: (state, action) => {
       clearCart();
       state.carts = [];
@@ -49,6 +53,6 @@ export const userSlice = createSlice({
 
   }
 });
-export const { clearData, setUser, updateCart, clearCarts, setCart } = userSlice.actions;
+export const { clearData, setUser, updateCart, clearCarts, updateUser, setCart, removeFromCart } = userSlice.actions;
 
 export default userSlice.reducer;
