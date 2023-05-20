@@ -18,8 +18,8 @@ const Login = () => {
 
 
   const nav = useNavigate();
-  const state = useLocation();
-  const path = state?.form?.pathname || '/';
+  const { state } = useLocation();
+  const path = state?.form?.pathname || state?.path || '/';
   const dispatch = useDispatch();
 
 
@@ -44,7 +44,7 @@ const Login = () => {
       try {
         const response = await loginUser(val).unwrap();
         dispatch(setUser(response.user));
-        nav(path);
+        nav(path, { replace: true });
         toast.success('successfully login');
       } catch (err) {
         toast.error(err.data.message);

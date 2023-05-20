@@ -23,6 +23,11 @@ export const userSlice = createSlice({
       if (!existItem) {
         state.carts.push(action.payload);
         addToCart(state.carts);
+      } else {
+        state.carts = state.carts.map((cart) => {
+          return cart.product === action.payload.product ? action.payload : cart;
+        });
+        addToCart(state.carts);
       }
 
     },

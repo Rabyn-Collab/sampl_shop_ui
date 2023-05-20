@@ -6,7 +6,7 @@ const AuthRoutes = () => {
   const { user } = useSelector((store) => store.userInfo);
 
   const location = useLocation();
-  return user === null ? <Navigate to='/user_login' state={{ form: location }} replace /> : <Outlet />
+  return user === null ? <Navigate to='/user_login' state={{ form: location }} replace={true} /> : <Outlet />
 }
 
 export default AuthRoutes

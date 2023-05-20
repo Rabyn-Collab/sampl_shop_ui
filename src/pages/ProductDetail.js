@@ -19,7 +19,6 @@ const ProductDetail = () => {
     initialValues: {
       select: 1
     },
-
   });
 
 
@@ -120,7 +119,22 @@ const ProductDetail = () => {
 
 
       </div>
-      <Reviews />
+      <div className='px-5 space-y-4'>
+        <h1>REVIEWS</h1>
+        {data.reviews.map((r) => {
+          return <div key={r.user}>
+            <h1>{r.username.toUpperCase()}</h1>
+            <div className='flex'>
+              {[...Array(r.rating).keys()].map((x) => {
+                return <div key={x + 1}>
+                  <i class="fa-sharp fa-solid fa-star"></i>
+                </div>
+              })}</div>
+            <p>{r.comment}</p>
+          </div>
+        })}
+      </div>
+      <Reviews id={data._id} />
     </>
   )
 }

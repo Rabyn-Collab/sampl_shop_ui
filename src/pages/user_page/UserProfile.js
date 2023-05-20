@@ -18,7 +18,6 @@ const UserProfile = () => {
   const formik = useFormik({
     initialValues: {
       email: '',
-      password: '',
       name: ''
     },
     onSubmit: async (val) => {
@@ -62,16 +61,7 @@ const UserProfile = () => {
               {formik.errors.email && formik.touched.email ? <h1 className='mt-2 text-red-600'>{formik.errors.email}</h1> : null}
             </div>
 
-            <div>
-              <Input
-                name='password'
-                id='password'
-                onChange={formik.handleChange}
-                value={formik.values.password}
-                error={formik.errors.password && formik.touched.password ? true : false}
-                type="password" size="lg" label="Password" />
-              {formik.errors.password && formik.touched.password ? <h1 className='mt-2 text-red-600'>{formik.errors.password}</h1> : null}
-            </div>
+
           </div>
 
           <Button type="submit" className="mt-6 bg-black" >
